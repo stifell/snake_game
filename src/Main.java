@@ -30,10 +30,7 @@ public class Main extends JFrame {
         label.setBounds(320,20,320,320);
         add(label);
         Controller controller = new Controller(label); // двигаем иконку
-//        addKeyListener(controller);
-//        button.setFocusable(false);
-//        textField.setFocusable(false);
-//        textArea.setFocusable(false);
+
         button.addKeyListener(controller); // кнопка имеет приортет
         setVisible(true); // видимость окна
     }
