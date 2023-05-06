@@ -33,6 +33,7 @@ public class Main extends JFrame {
         // Дима красавчик
         button.addKeyListener(controller); // кнопка имеет приортет
         setVisible(true); // видимость окна
+        // Денис чемпион
     }
     public static void main(String[] args) {
         new Main();
