@@ -12,5 +12,6 @@ public class Listener implements ActionListener{ // Listener выполняет 
     public void actionPerformed(ActionEvent e) { // отвечает за действия пользователя
         i++;
         button.setText("clicked " + i);
+        i++;
     }
 }
