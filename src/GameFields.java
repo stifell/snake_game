@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class GameFields extends JPanel implements ActionListener {
 
-    static int screen_width = 800;
-    static int screen_height = 800;
+    static int screen_width = Toolkit.getDefaultToolkit().getScreenSize().width;
+    static int screen_height = Toolkit.getDefaultToolkit().getScreenSize().height;
     static int unit_size = 25;
     static int game_units = (screen_width*screen_height)/unit_size;
     final int[] x = new int[game_units];
@@ -24,7 +24,7 @@ public class GameFields extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(screen_width,screen_height));
         this.setBackground(Color.black);
         this.setFocusable(true);
-        this.addKeyListener(new MyKeyListener());
+        this.addKeyListener(new MyKeyListener(this));
         start_game();
     }
 
@@ -133,41 +133,4 @@ public class GameFields extends JPanel implements ActionListener {
         repaint();
 
     }
-    public class MyKeyListener implements KeyListener{
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e){
-            switch (e.getKeyCode()){
-                case KeyEvent.VK_LEFT:
-                    if(direction != 'R'){
-                        direction = 'L';
-                    }
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    if(direction != 'L'){
-                        direction = 'R';
-                    }
-                    break;
-                case KeyEvent.VK_UP:
-                    if(direction != 'D'){
-                        direction = 'U';
-                    }
-                    break;
-                case KeyEvent.VK_DOWN:
-                    if(direction != 'U'){
-                        direction = 'D';
-                    }
-                    break;
-            }
-        }
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
-    }
-
 }
