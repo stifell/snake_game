@@ -1,6 +1,5 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +24,7 @@ public class Main extends JFrame {
         //setResizable(false); // не меняем размер
         JPanel panel = new JPanel(){protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            ImageIcon imageIcon = new ImageIcon("resources/image/backround.jpg"); // путь к изображению
+            ImageIcon imageIcon = new ImageIcon("фон.jpg"); // путь к изображению
             Image image = imageIcon.getImage();
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             String message = "Welcome to the snake!";
@@ -36,19 +35,15 @@ public class Main extends JFrame {
         }};
         panel.setBounds(0,0,WIDTH,HEIGTH);
         panel.setLayout(null);
-
         setExtendedState(JFrame.MAXIMIZED_BOTH); // размер на весь экран
         setUndecorated(true); // полноэкранный режим
         add(panel);
-
-        ImageIcon icon = new ImageIcon("resources/image/play.png");
-        ImageIcon icon_navod = new ImageIcon("resources/image/play_direct.png");
+        ImageIcon icon = new ImageIcon("knopka.png");
+        ImageIcon icon_navod = new ImageIcon("knopka-navod.png");
         JButton play = new JButton();
         play.setIcon(icon);
         play.setBounds((getWidth()-390)/2,getHeight()/3,390,120);
         play.setRolloverEnabled(false);
-        Border emptyBorder1 = BorderFactory.createEmptyBorder();
-        play.setBorder(emptyBorder1);
         panel.add(play,BorderLayout.CENTER);
         play.addActionListener(new ActionListener() {
             @Override
@@ -64,13 +59,11 @@ public class Main extends JFrame {
                 panel.setVisible(false);
             }
         });
-        ImageIcon icon1 = new ImageIcon("resources/image/exit.png");
-        ImageIcon vykhod_navod = new ImageIcon("resources/image/exit_direct.png");
+        ImageIcon icon1 = new ImageIcon("vykhod.png");
+        ImageIcon vykhod_navod = new ImageIcon("vykhod-navod.png");
         JButton exit = new JButton();
         exit.setBounds((getWidth()-390)/2,getHeight()/2,390,120 );
         exit.setRolloverEnabled(false);
-        Border emptyBorder2 = BorderFactory.createEmptyBorder();
-        exit.setBorder(emptyBorder2);
         exit.setIcon(icon1);
         play.addMouseListener(new MouseListener() {
             @Override
@@ -136,6 +129,8 @@ public class Main extends JFrame {
 
             }
         });
+        
+
 
         setVisible(true); // видимость окна
     }
