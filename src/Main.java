@@ -24,7 +24,7 @@ public class Main extends JFrame {
         //setResizable(false); // не меняем размер
         JPanel panel = new JPanel(){protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            ImageIcon imageIcon = new ImageIcon("фон.jpg"); // путь к изображению
+            ImageIcon imageIcon = new ImageIcon(""); // путь к изображению
             Image image = imageIcon.getImage();
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             String message = "Welcome to the snake!";
