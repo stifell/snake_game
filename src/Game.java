@@ -1,11 +1,7 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,25 +9,18 @@ import java.util.Random;
 public class Game extends JPanel implements ActionListener {
     final int SNAKE_SIZE = 25;
     final int APPLE_SIZE = 25;
-    int score;
-    boolean game;
+    private int score;
+    private boolean game;
     // BufferedImage image; // фон
-    BufferedImage apple_image; // яблоко
-    List<Point> snake = new ArrayList<Point>();
-    List<Point> apples = new ArrayList<Point>();
-    Random rng = new Random();
+    private List<Point> snake = new ArrayList<Point>();
+    private List<Point> apples = new ArrayList<Point>();
+    private Random rng = new Random();
+    private Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
     Timer timer;
-    Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
     Game(){
         setBounds(68,57,Main.WIDTH-136,Main.HEIGTH-114);
         // setBackground(new Color(156,207,89));
         setLayout(null);
-        try {
-            apple_image = ImageIO.read(new File("resources/image/apple.png"));
-            // image = ImageIO.read(new File("picture.png")); // загрузка изображения
-        }catch (IOException e) {
-            e.printStackTrace(); // вывод стек исключения при ошибке
-        }
         addKeyListener(new Controller(this));
         setFocusable(true);
         start();
@@ -45,7 +34,7 @@ public class Game extends JPanel implements ActionListener {
         snake.add(new Point(1,0));
         snake.add(new Point(0,0));
         newApple();
-        timer = new Timer(100, this);
+        timer = new Timer(90, this);
         timer.start();
     }
 
@@ -84,7 +73,7 @@ public class Game extends JPanel implements ActionListener {
         if (apples.contains(newHead)){
             score++;
             apples.remove(newHead);
-            update_score(score); // вывод счетчика
+            Main.update_score(score); // вывод счетчика
             newApple();
         }
         else
@@ -129,7 +118,7 @@ public class Game extends JPanel implements ActionListener {
         if (!game){
             String message = "Game over!";
             g.setColor(Color.white);
-            g.setFont(Fonts.FONT_SECOND); // шрифт
+            g.setFont(Resources.FONT_SECOND); // шрифт
             int message_wight = g.getFontMetrics().stringWidth(message); // ширина текста
             g.drawString(message,(getWidth()-message_wight)/2,getHeight()/2); // по середине
             return;
@@ -142,14 +131,10 @@ public class Game extends JPanel implements ActionListener {
         }
         g.setColor(Color.RED);
         for (Point point: apples){
-            g.drawImage(apple_image,point.x*APPLE_SIZE,point.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE,null);
+            g.drawImage(Resources.APPLE_IMAGE,point.x*APPLE_SIZE,point.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE,null);
             // g.fillOval(point.x*APPLE_SIZE,point.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE);
         }
     }
-
-    static public void update_score(int score){
-        Main.label.setText("Score: " + score);
-    } // меняем при каждом добавлении score
 
     @Override
     public void actionPerformed(ActionEvent e) {
