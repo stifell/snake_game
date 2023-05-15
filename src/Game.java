@@ -84,7 +84,7 @@ public class Game extends JPanel implements ActionListener {
         if (apples.contains(newHead)){
             score++;
             apples.remove(newHead);
-            Main.update_score(score); // вывод счетчика
+            update_score(score); // вывод счетчика
             newApple();
         }
         else
@@ -146,6 +146,10 @@ public class Game extends JPanel implements ActionListener {
             // g.fillOval(point.x*APPLE_SIZE,point.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE);
         }
     }
+
+    static public void update_score(int score){
+        Main.label.setText("Score: " + score);
+    } // меняем при каждом добавлении score
 
     @Override
     public void actionPerformed(ActionEvent e) {
