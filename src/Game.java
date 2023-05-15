@@ -27,7 +27,7 @@ public class Game extends JPanel implements ActionListener {
         // setBackground(new Color(156,207,89));
         setLayout(null);
         try {
-            apple_image = ImageIO.read(new File("apple.png"));
+            apple_image = ImageIO.read(new File("resources/image/apple.png"));
             // image = ImageIO.read(new File("picture.png")); // загрузка изображения
         }catch (IOException e) {
             e.printStackTrace(); // вывод стек исключения при ошибке
