@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,12 +45,14 @@ public class Main extends JFrame {
         play.setIcon(icon);
         play.setBounds((getWidth()-390)/2,getHeight()/3,390,120);
         play.setRolloverEnabled(false);
+        Border emptyBorder = BorderFactory.createEmptyBorder();
+        play.setBorder(emptyBorder);
         panel.add(play,BorderLayout.CENTER);
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 label = new JLabel(); // счетик
-                label.setForeground(Color.BLACK);
+                label.setForeground(Color.WHITE);
                 label.setFont(Fonts.FONT_FIRST);
                 label.setBounds(68,15,100,50);
                 label.setText("Score: " + 0);
@@ -64,6 +67,8 @@ public class Main extends JFrame {
         JButton exit = new JButton();
         exit.setBounds((getWidth()-390)/2,getHeight()/2,390,120 );
         exit.setRolloverEnabled(false);
+        Border emptyBorder1 = BorderFactory.createEmptyBorder();
+        exit.setBorder(emptyBorder1);
         exit.setIcon(icon1);
         play.addMouseListener(new MouseListener() {
             @Override
