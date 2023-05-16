@@ -19,11 +19,11 @@ public class Game extends JPanel implements ActionListener {
     private Random rng = new Random();
     private Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
     Timer timer;
-    Game(){
+    Game(Main main){
         setBounds(68,57,Main.WIDTH-136,Main.HEIGTH-114);
         // setBackground(new Color(156,207,89));
         setLayout(null);
-        addKeyListener(new Controller(this));
+        addKeyListener(new Controller(this, main));
         setFocusable(true);
         start();
     }

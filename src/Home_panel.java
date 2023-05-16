@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class HomePanel extends JPanel{
+public class Home_panel extends JPanel{
     private JButton play;
     static JButton exit;
-    HomePanel(){
+    Home_panel(){
         setBounds(0,0,Main.WIDTH,Main.HEIGTH);
         setLayout(null); // отключаем менеджер компоновки
         // setVisible(false);

@@ -14,7 +14,6 @@ public class Resources {
     public static ImageIcon ICON_PLAY_DIRECT;
     public static ImageIcon ICON_EXIT;
     public static ImageIcon ICON_EXIT_DIRECT;
-
     public  static ImageIcon ICON_CONTINUE;
     public  static ImageIcon ICON_CONTINUE_DIRECT;
     public  static ImageIcon ICON_RESTART;

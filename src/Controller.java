@@ -4,11 +4,11 @@ import java.awt.event.KeyListener;
 
 public class Controller implements KeyListener {
     private Game game;
+    private Main main;
 
-
-
-    Controller(Game game){
+    Controller(Game game, Main main){
         this.game = game;
+        this.main = main;
     }
 
     @Override
@@ -33,15 +33,15 @@ public class Controller implements KeyListener {
                     break;
                 case KeyEvent.VK_ESCAPE:
                     game.timer.stop();
+                    main.pause_start();
                     break;
             }
         }
-        else if (key == KeyEvent.VK_ESCAPE)
+        else if (key == KeyEvent.VK_ESCAPE) {
+            main.pause_exit();
             game.timer.start();
+        }
     }
-
-
-
 
     @Override
     public void keyReleased(KeyEvent e) {

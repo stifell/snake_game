@@ -2,14 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 public class Main extends JFrame {
     static final int WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     static final int HEIGTH = Toolkit.getDefaultToolkit().getScreenSize().height;
     // static int score = 0;
     static JLabel label; // счетчик
-    private HomePanel home; // панелька
+    private Home_panel home; // панелька
+    private Game game;
+    private Pause_panel pause;
 //    BufferedImage play;
 
     Main(){
@@ -21,7 +22,7 @@ public class Main extends JFrame {
         setUndecorated(true); // полноэкранный режим
         getContentPane().setBackground(new Color(32,142,81));
 
-        home = new HomePanel();
+        home = new Home_panel();
         add(home);
 
         home.getPlayButton().addActionListener(new ActionListener() { // считывание нажатия на кнопку play
@@ -44,12 +45,28 @@ public class Main extends JFrame {
         Main.label.setText("Score: " + score);
     } // меняем при каждом добавлении score
     public void startGame(){
-        Game game = new Game();
+        game = new Game(this);
         this.remove(home);
         this.add(game); // добавляем игру
         game.requestFocus(); // фокусируем игру
         revalidate(); // обновления компоновки (пересчитает размер и расположение компонентов)
         repaint(); // обновления отрисовки компонентов
+    }
+    public void pause_start(){
+        pause = new Pause_panel(game,this); // панелька паузы
+        game.setVisible(false); // убираем видимость
+        label.setVisible(false);
+        this.add(pause); // добавляем в окно
+        revalidate();
+        repaint();
+    }
+    public void pause_exit(){
+        this.remove(pause); // убираем паузу
+        game.setVisible(true); // добавляем видимость
+        label.setVisible(true);
+        game.requestFocus(); // фокусируем игру
+        revalidate();
+        repaint();
     }
     public static void main(String[] args) {
         new Main();
