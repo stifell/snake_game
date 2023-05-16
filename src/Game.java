@@ -1,10 +1,12 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Game extends JPanel implements ActionListener {
     final int SNAKE_SIZE = 25;
@@ -48,7 +50,7 @@ public class Game extends JPanel implements ActionListener {
         }
     }
 
-    void snake_move(){
+    void snake_move() {
         Point head = snake.get(0);
         int dx = head.x, dy = head.y;
         switch (direction){
@@ -56,6 +58,7 @@ public class Game extends JPanel implements ActionListener {
             case DOWN: dy += 1; break;
             case RIGHT: dx += 1; break;
             case LEFT: dx -= 1; break;
+
         }
         Point newHead = new Point(dx,dy);
         snake.add(0,newHead);

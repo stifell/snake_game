@@ -6,87 +6,108 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class HomePanel extends JPanel{
-    private JButton play;
-    static JButton exit;
-    HomePanel(){
+public class Pause_panel extends JPanel {
+    private Game game;
+    private Main main;
+
+    Pause_panel(){
         setBounds(0,0,Main.WIDTH,Main.HEIGTH);
-        setLayout(null); // отключаем менеджер компоновки
-        // setVisible(false);
+        setLayout(null);
         setFocusable(true);
 
-        play = new JButton();
-        play.setIcon(Resources.ICON_PLAY);
-        play.setBounds((getWidth()-390)/2,getHeight()/3,390,120);
-        play.setRolloverEnabled(false); // отключение эффетка подсветки при наведении
-        Border emptyBorder = BorderFactory.createEmptyBorder(); // убираем синие границы картинки
-        play.setBorder(emptyBorder);
-        add(play);
-
-        exit = new JButton();
-        exit.setBounds((getWidth()-390)/2,getHeight()/2,390,120 );
-        exit.setRolloverEnabled(false); // отключение эффетка подсветки при наведении
-        // Border emptyBorder2 = BorderFactory.createEmptyBorder(); // убираем синие границы картинки
-        exit.setBorder(emptyBorder);
-        exit.setIcon(Resources.ICON_EXIT);
-        add(exit);
-
-        play.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                play.setIcon(Resources.ICON_PLAY_DIRECT);
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                play.setIcon(Resources.ICON_PLAY);
-            }
-        });
-        exit.addActionListener(new ActionListener() {
+        JButton countinue = new JButton();
+        countinue.setIcon(Resources.ICON_CONTINUE);
+        countinue.setBounds((getWidth()-390)/2,getHeight()/3,390,120);
+        countinue.setRolloverEnabled(false);
+        Border no_border = BorderFactory.createEmptyBorder();
+        countinue.setBorder(no_border);
+        JButton restart = new JButton();
+        restart.setIcon(Resources.ICON_RESTART);
+        restart.setBounds((getWidth()-390)/2,getHeight()/2,390,120);
+        restart.setRolloverEnabled(false);
+        Border no_border_restart = BorderFactory.createEmptyBorder();
+        restart.setBorder(no_border_restart);
+        add(restart);
+        add(countinue);
+        add(HomePanel.exit);
+        countinue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                game.timer.start();
             }
         });
-        exit.addMouseListener(new MouseListener() {
+        countinue.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
             }
+
             @Override
             public void mousePressed(MouseEvent e) {
+
             }
+
             @Override
             public void mouseReleased(MouseEvent e) {
+
             }
+
             @Override
             public void mouseEntered(MouseEvent e) {
-                exit.setIcon(Resources.ICON_EXIT_DIRECT);
+                countinue.setIcon(Resources.ICON_CONTINUE_DIRECT);
+
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
-                exit.setIcon(Resources.ICON_EXIT);
+                countinue.setIcon(Resources.ICON_CONTINUE);
+
             }
         });
-    }
+        restart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.startGame();
+            }
+        });
+        restart.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
 
-    public JButton getPlayButton() {
-        return play;
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                restart.setIcon(Resources.ICON_RESTART_DIRECT);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                restart.setIcon(Resources.ICON_RESTART);
+
+            }
+        });
     }
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g.drawImage(Resources.BACKROUND,0,0,getWidth(),getHeight(),null);
-        String message = "Welcome to the snake!";
+        String message = "Snake";
         g.setColor(Color.white);
         g.setFont(Resources.FONT_SECOND); // шрифт
         int message_wight = g.getFontMetrics().stringWidth(message); // ширина текста
         g.drawString(message,(getWidth()-message_wight)/2,getHeight()/4); // по середине
     }
+
+
 }

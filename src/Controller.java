@@ -1,8 +1,12 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+
 public class Controller implements KeyListener {
     private Game game;
+
+
+
     Controller(Game game){
         this.game = game;
     }
@@ -35,6 +39,9 @@ public class Controller implements KeyListener {
         else if (key == KeyEvent.VK_ESCAPE)
             game.timer.start();
     }
+
+
+
 
     @Override
     public void keyReleased(KeyEvent e) {

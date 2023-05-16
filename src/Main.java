@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class Main extends JFrame {
     static final int WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -22,6 +23,7 @@ public class Main extends JFrame {
 
         home = new HomePanel();
         add(home);
+
         home.getPlayButton().addActionListener(new ActionListener() { // считывание нажатия на кнопку play
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -36,7 +38,6 @@ public class Main extends JFrame {
         label.setText("Score: " + 0);
         add(label);
 
-        //panel.setVisible(false);
         setVisible(true); // видимость окна
     }
     static public void update_score(int score){
