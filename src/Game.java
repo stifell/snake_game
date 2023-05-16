@@ -18,7 +18,7 @@ public class Game extends JPanel implements ActionListener {
     private List<Point> apples = new ArrayList<Point>();
     private Random rng = new Random();
     private Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
-    Timer timer;
+    public Timer timer;
     Game(Main main){
         this.main = main;
         setBounds(68,57,Main.WIDTH-136,Main.HEIGTH-114);
