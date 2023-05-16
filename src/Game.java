@@ -9,19 +9,19 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Game extends JPanel implements ActionListener {
+    private Main main;
     final int SNAKE_SIZE = 25;
     final int APPLE_SIZE = 25;
-    private int score;
+    public int score;
     private boolean game;
-    // BufferedImage image; // фон
     private List<Point> snake = new ArrayList<Point>();
     private List<Point> apples = new ArrayList<Point>();
     private Random rng = new Random();
     private Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
     Timer timer;
     Game(Main main){
+        this.main = main;
         setBounds(68,57,Main.WIDTH-136,Main.HEIGTH-114);
-        // setBackground(new Color(156,207,89));
         setLayout(null);
         addKeyListener(new Controller(this, main));
         setFocusable(true);
@@ -41,7 +41,7 @@ public class Game extends JPanel implements ActionListener {
     }
 
     void newApple(){
-        while (true){ // 1 яблокo
+        while (true){ // 3 яблока
             Point apple = new Point(rng.nextInt(getWidth()/APPLE_SIZE),rng.nextInt(getHeight()/APPLE_SIZE));
             if (!apples.contains(apple) && !snake.contains(apple)){ // если яблока с такими координатами нет и не на змее
                 apples.add(apple);
@@ -76,7 +76,7 @@ public class Game extends JPanel implements ActionListener {
         if (apples.contains(newHead)){
             score++;
             apples.remove(newHead);
-            Main.update_score(score); // вывод счетчика
+            main.update_score(score); // вывод счетчика
             newApple();
         }
         else
@@ -119,10 +119,9 @@ public class Game extends JPanel implements ActionListener {
             }
         }
         if (!game){
-            add(new Game_over());
+            main.game_over_start();
             return;
         }
-        // g.drawImage(image,0,0,null); // вывод картинки (null - процесс загрузки изображения)
         g.setColor(new Color(62,107,221)); // тело
         for (Point point: snake){
             g.fillRect(point.x*SNAKE_SIZE,point.y*SNAKE_SIZE,SNAKE_SIZE,SNAKE_SIZE); // отрисовка
@@ -131,7 +130,6 @@ public class Game extends JPanel implements ActionListener {
         g.setColor(Color.RED);
         for (Point point: apples){
             g.drawImage(Resources.APPLE_IMAGE,point.x*APPLE_SIZE,point.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE,null);
-            // g.fillOval(point.x*APPLE_SIZE,point.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE);
         }
     }
 

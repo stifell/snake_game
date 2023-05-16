@@ -8,26 +8,24 @@ import java.awt.event.MouseListener;
 
 public class Home_panel extends JPanel{
     private JButton play;
-    static JButton exit;
+    private JButton exit;
     Home_panel(){
         setBounds(0,0,Main.WIDTH,Main.HEIGTH);
         setLayout(null); // отключаем менеджер компоновки
-        // setVisible(false);
         setFocusable(true);
 
         play = new JButton();
         play.setIcon(Resources.ICON_PLAY);
         play.setBounds((getWidth()-390)/2,getHeight()/3,390,120);
         play.setRolloverEnabled(false); // отключение эффетка подсветки при наведении
-        Border emptyBorder = BorderFactory.createEmptyBorder(); // убираем синие границы картинки
-        play.setBorder(emptyBorder);
+        Border no_border = BorderFactory.createEmptyBorder(); // убираем синие границы картинки
+        play.setBorder(no_border);
         add(play);
 
         exit = new JButton();
         exit.setBounds((getWidth()-390)/2,getHeight()/2,390,120 );
-        exit.setRolloverEnabled(false); // отключение эффетка подсветки при наведении
-        // Border emptyBorder2 = BorderFactory.createEmptyBorder(); // убираем синие границы картинки
-        exit.setBorder(emptyBorder);
+        exit.setRolloverEnabled(false);
+        exit.setBorder(no_border);
         exit.setIcon(Resources.ICON_EXIT);
         add(exit);
 

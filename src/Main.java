@@ -6,13 +6,11 @@ import java.awt.event.ActionListener;
 public class Main extends JFrame {
     static final int WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     static final int HEIGTH = Toolkit.getDefaultToolkit().getScreenSize().height;
-    // static int score = 0;
-    static JLabel label; // счетчик
+    private JLabel label; // счетчик
     private Home_panel home; // панелька
     private Game game;
     private Pause_panel pause;
-    private Game_over game_over;
-//    BufferedImage play;
+    private Game_over_panel game_over;
 
     Main(){
         super("Snake Game");
@@ -23,7 +21,7 @@ public class Main extends JFrame {
         setUndecorated(true); // полноэкранный режим
         getContentPane().setBackground(new Color(32,142,81));
 
-        home = new Home_panel();
+        home = new Home_panel(); // начальная панелька
         add(home);
 
         home.getPlayButton().addActionListener(new ActionListener() { // считывание нажатия на кнопку play
@@ -42,8 +40,8 @@ public class Main extends JFrame {
 
         setVisible(true); // видимость окна
     }
-    static public void update_score(int score){
-        Main.label.setText("Score: " + score);
+    public void update_score(int score){
+        label.setText("Score: " + score);
     } // меняем при каждом добавлении score
     public void startGame(){
         game = new Game(this);
@@ -65,15 +63,25 @@ public class Main extends JFrame {
         this.remove(pause); // убираем паузу
         game.setVisible(true); // добавляем видимость
         label.setVisible(true);
+        update_score(game.score); // прошлый счет при рестарте сохраняется, обновляем
         game.requestFocus(); // фокусируем игру
         revalidate();
         repaint();
     }
     public void game_over_start(){
-        game_over = new Game_over(); // панелька game over
+        game_over = new Game_over_panel(game,this); // панелька game over
         game.setVisible(false); // убираем видимость
         label.setVisible(false);
         this.add(game_over); // добавляем в окно
+        revalidate();
+        repaint();
+    }
+    public void game_over_exit(){
+        this.remove(game_over); // убираем панельку
+        game.setVisible(true);
+        label.setVisible(true);
+        update_score(game.score); // прошлый счет при рестарте сохраняется, обновляем
+        game.requestFocus(); // фокусируем игру
         revalidate();
         repaint();
     }

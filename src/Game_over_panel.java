@@ -6,12 +6,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class Game_over extends JPanel {
+public class Game_over_panel extends JPanel {
     private Main main;
+    private Game game;
     private JButton restart;
     private JButton exit;
 
-    Game_over(){
+    Game_over_panel(Game game, Main main){
+        this.main = main;
+        this.game = game;
         setBounds(0,0,Main.WIDTH,Main.HEIGTH);
         setLayout(null);
         setFocusable(true);
@@ -34,8 +37,8 @@ public class Game_over extends JPanel {
         restart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.game_over_start();
-
+                main.startGame();
+                main.game_over_exit();
             }
         });
         restart.addMouseListener(new MouseListener() {
@@ -86,11 +89,11 @@ public class Game_over extends JPanel {
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g.drawImage(Resources.BACKROUND,0,0,Main.WIDTH,Main.HEIGTH,null);
-        String message = "Game over!";
+        String message = "Game over! Score: " + game.score;
         g.setColor(Color.white);
         g.setFont(Resources.FONT_SECOND); // шрифт
         int message_wight = g.getFontMetrics().stringWidth(message); // ширина текста
-        g.drawString(message,(getWidth()-message_wight)/2,getHeight()/6);
+        g.drawString(message,(getWidth()-message_wight)/2,getHeight()/4);
     }
 }
 
