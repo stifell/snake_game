@@ -39,9 +39,6 @@ public class Main extends JFrame {
         //panel.setVisible(false);
         setVisible(true); // видимость окна
     }
-    public static void main(String[] args) {
-        new Main();
-    }
     static public void update_score(int score){
         Main.label.setText("Score: " + score);
     } // меняем при каждом добавлении score
@@ -52,5 +49,8 @@ public class Main extends JFrame {
         game.requestFocus(); // фокусируем игру
         revalidate(); // обновления компоновки (пересчитает размер и расположение компонентов)
         repaint(); // обновления отрисовки компонентов
+    }
+    public static void main(String[] args) {
+        new Main();
     }
 }

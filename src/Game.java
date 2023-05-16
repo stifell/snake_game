@@ -60,7 +60,7 @@ public class Game extends JPanel implements ActionListener {
         Point newHead = new Point(dx,dy);
         snake.add(0,newHead);
         // если вышел за границу
-        if (newHead.x < 0 || newHead.y < 0 || newHead.x > getWidth()/SNAKE_SIZE || newHead.y > getHeight()/SNAKE_SIZE){
+        if (newHead.x < 0 || newHead.y < 0 || newHead.x >= getWidth()/SNAKE_SIZE || newHead.y >= getHeight()/SNAKE_SIZE){
             game = false;
             return;
         }
