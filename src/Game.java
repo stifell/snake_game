@@ -41,7 +41,7 @@ public class Game extends JPanel implements ActionListener {
     }
 
     void newApple(){
-        while (true){ // 3 яблока
+        while (true){ // 1 яблокo
             Point apple = new Point(rng.nextInt(getWidth()/APPLE_SIZE),rng.nextInt(getHeight()/APPLE_SIZE));
             if (!apples.contains(apple) && !snake.contains(apple)){ // если яблока с такими координатами нет и не на змее
                 apples.add(apple);
@@ -119,11 +119,7 @@ public class Game extends JPanel implements ActionListener {
             }
         }
         if (!game){
-            String message = "Game over!";
-            g.setColor(Color.white);
-            g.setFont(Resources.FONT_SECOND); // шрифт
-            int message_wight = g.getFontMetrics().stringWidth(message); // ширина текста
-            g.drawString(message,(getWidth()-message_wight)/2,getHeight()/2); // по середине
+            add(new Game_over());
             return;
         }
         // g.drawImage(image,0,0,null); // вывод картинки (null - процесс загрузки изображения)

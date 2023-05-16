@@ -11,6 +11,7 @@ public class Main extends JFrame {
     private Home_panel home; // панелька
     private Game game;
     private Pause_panel pause;
+    private Game_over game_over;
 //    BufferedImage play;
 
     Main(){
@@ -65,6 +66,14 @@ public class Main extends JFrame {
         game.setVisible(true); // добавляем видимость
         label.setVisible(true);
         game.requestFocus(); // фокусируем игру
+        revalidate();
+        repaint();
+    }
+    public void game_over_start(){
+        game_over = new Game_over(); // панелька game over
+        game.setVisible(false); // убираем видимость
+        label.setVisible(false);
+        this.add(game_over); // добавляем в окно
         revalidate();
         repaint();
     }
