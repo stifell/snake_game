@@ -3,6 +3,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,11 +15,17 @@ public class Game extends JPanel implements ActionListener {
     final int SNAKE_SIZE = 25;
     final int APPLE_SIZE = 25;
     public int score;
+    //private int angle = 0;
+    private int an = 0;
     private boolean game;
+    private Point apple;
     private List<Point> snake = new ArrayList<Point>();
-    private List<Point> apples = new ArrayList<Point>();
+    private List<Point> change_point = new ArrayList<Point>();
+    private List<Direction> directionList = new ArrayList<Direction>();
+    private List<Direction> change_direction = new ArrayList<Direction>();
     private Random rng = new Random();
     private Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
+    private Direction check_direction;
     public Timer timer;
     Game(Main main){
         this.main = main;
@@ -36,15 +44,18 @@ public class Game extends JPanel implements ActionListener {
         snake.add(new Point(1,0));
         snake.add(new Point(0,0));
         newApple();
+        change_point.add(snake.get(0));
+        for (int i = 0; i < snake.size(); i++)
+            directionList.add(direction);
+        change_direction.add(directionList.get(0));
         timer = new Timer(90, this);
         timer.start();
     }
 
     void newApple(){
-        while (true){ // 3 яблока
-            Point apple = new Point(rng.nextInt(getWidth()/APPLE_SIZE),rng.nextInt(getHeight()/APPLE_SIZE));
-            if (!apples.contains(apple) && !snake.contains(apple)){ // если яблока с такими координатами нет и не на змее
-                apples.add(apple);
+        while (true){
+            apple = new Point(rng.nextInt(getWidth()/APPLE_SIZE),rng.nextInt(getHeight()/APPLE_SIZE));
+            if (!snake.contains(apple)){ // если яблока с такими координатами не на змее
                 break;
             }
         }
@@ -73,14 +84,20 @@ public class Game extends JPanel implements ActionListener {
             return;
         }
         // если яблоко увлечиваем счетчик
-        if (apples.contains(newHead)){
-            score++;
-            apples.remove(newHead);
-            main.update_score(score); // вывод счетчика
+        if (apple.equals(newHead)){ // сравнение
             newApple();
+            directionList.add(0,direction);
+            score++;
+            main.update_score(score); // вывод счетчика
         }
-        else
-            snake.remove(snake.size()-1);
+        else {
+            snake.remove(snake.size() - 1);
+        }
+        if (direction != check_direction){
+            change_point.add(snake.get(1));
+            change_direction.add(direction);
+            directionList.set(0,direction);
+        }
     }
 
     void setDirection(Direction direction) {
@@ -92,15 +109,31 @@ public class Game extends JPanel implements ActionListener {
         if (this.direction == Direction.UP && direction == Direction.DOWN ||
                 this.direction == Direction.DOWN && direction == Direction.UP ||
                 this.direction == Direction.LEFT && direction == Direction.RIGHT ||
-                this.direction == Direction.RIGHT && direction == Direction.LEFT) {
+                this.direction == Direction.RIGHT && direction == Direction.LEFT ||
+                this.direction == direction) {
             return;
         }
+        check_direction = this.direction;
         this.direction = direction;
     }
+
+    int pictureDirection(Direction direction){
+        int angle = 0;
+        switch (direction){
+            case RIGHT: angle = 0; break;
+            case DOWN: angle = 90; break;
+            case LEFT: angle = 180; break;
+            case UP: angle = 270; break;
+        }
+        return angle;
+        }
 
     @Override
     protected void paintComponent(Graphics g){ // рисования графики внутри компонента
         super.paintComponent(g); // настройка графического контекста
+        Graphics2D g2 = (Graphics2D) g;
+        AffineTransform at = g2.getTransform();
+
         for (int i = 0; i < getHeight()/SNAKE_SIZE; i++){
             for (int j = 0; j < getWidth()/SNAKE_SIZE; j++){
                 if (i % 2 == 0) {
@@ -122,20 +155,41 @@ public class Game extends JPanel implements ActionListener {
             main.game_over_start();
             return;
         }
-        g.setColor(new Color(62,107,221)); // тело
-        for (Point point: snake){
-            g.fillRect(point.x*SNAKE_SIZE,point.y*SNAKE_SIZE,SNAKE_SIZE,SNAKE_SIZE); // отрисовка
-
+        int pov = 0;
+        BufferedImage image = null;
+        for (int i = 0; i < snake.size(); i++) {
+            for (int j = 0; j < change_point.size(); j++) {
+                if (i == 0) {
+                    image = Resources.SNAKE_HEAD;
+                    pov = pictureDirection(directionList.get(i));
+                } else if (i == snake.size() - 1) {
+                    if (snake.get(i).equals(change_point.get(j))) {
+                        directionList.set(i, change_direction.get(j));
+                        change_point.remove(j);
+                        change_direction.remove(j);
+                    }
+                    image = Resources.SNAKE_TAIL;
+                    pov = pictureDirection(directionList.get(i));
+                } else {
+                    if (snake.get(i).equals(change_point.get(j)))
+                        directionList.set(i,change_direction.get(j));
+                    image = Resources.SNAKE_BODY;
+                    pov = pictureDirection(directionList.get(i));
+                }
+            }
+            at.rotate(Math.toRadians(pov), snake.get(i).x * SNAKE_SIZE + 12.5, snake.get(i).y * SNAKE_SIZE + 12.5);
+            g2.setTransform(at);
+            g.drawImage(image, snake.get(i).x * SNAKE_SIZE, snake.get(i).y * SNAKE_SIZE, 25, 25, null);
+            at.rotate(-Math.toRadians(pov), snake.get(i).x * SNAKE_SIZE + 12.5, snake.get(i).y * SNAKE_SIZE + 12.5);
+            g2.setTransform(at);
         }
         g.setColor(Color.RED);
-        for (Point point: apples){
-            g.drawImage(Resources.APPLE_IMAGE,point.x*APPLE_SIZE,point.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE,null);
-        }
+        g.drawImage(Resources.APPLE_IMAGE,apple.x*APPLE_SIZE,apple.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE,null);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        snake_move();
         repaint();
+        snake_move();
     }
 }
