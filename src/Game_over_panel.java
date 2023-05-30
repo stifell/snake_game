@@ -96,4 +96,3 @@ public class Game_over_panel extends JPanel {
         g.drawString(message,(getWidth()-message_wight)/2,getHeight()/4);
     }
 }
-
