@@ -14,13 +14,11 @@ public class Game extends JPanel implements ActionListener {
     final int APPLE_SIZE = 25;
     public int score;
     private boolean game;
-    static List<Point> snake = new ArrayList<Point>();
-    static List<Point> apples = new ArrayList<Point>();
+    private List<Point> snake = new ArrayList<Point>();
+    private List<Point> apples = new ArrayList<Point>();
     private Random rng = new Random();
     private Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
     public Timer timer;
-    public Thread thread;
-
     Game(Main main){
         this.main = main;
         setBounds(68,57,Main.WIDTH-136,Main.HEIGTH-114);
@@ -37,14 +35,13 @@ public class Game extends JPanel implements ActionListener {
         snake.add(new Point(2,0));
         snake.add(new Point(1,0));
         snake.add(new Point(0,0));
-        thread = new Thread(new Flow(this));// создание нового потока
-        thread.start();// запуск потока
+        newApple();
         timer = new Timer(90, this);
         timer.start();
     }
 
     void newApple(){
-        while (true){
+        while (true){ // 3 яблока
             Point apple = new Point(rng.nextInt(getWidth()/APPLE_SIZE),rng.nextInt(getHeight()/APPLE_SIZE));
             if (!apples.contains(apple) && !snake.contains(apple)){ // если яблока с такими координатами нет и не на змее
                 apples.add(apple);
@@ -80,7 +77,7 @@ public class Game extends JPanel implements ActionListener {
             score++;
             apples.remove(newHead);
             main.update_score(score); // вывод счетчика
-//            newApple();
+            newApple();
         }
         else
             snake.remove(snake.size()-1);
