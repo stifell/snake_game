@@ -14,10 +14,13 @@ public class Resources {
     public static ImageIcon ICON_PLAY_DIRECT;
     public static ImageIcon ICON_EXIT;
     public static ImageIcon ICON_EXIT_DIRECT;
-    public  static ImageIcon ICON_CONTINUE;
-    public  static ImageIcon ICON_CONTINUE_DIRECT;
-    public  static ImageIcon ICON_RESTART;
-    public  static ImageIcon ICON_RESTART_DIRECT;
+    public static ImageIcon ICON_CONTINUE;
+    public static ImageIcon ICON_CONTINUE_DIRECT;
+    public static ImageIcon ICON_RESTART;
+    public static ImageIcon ICON_RESTART_DIRECT;
+    public static BufferedImage SNAKE_HEAD;
+    public static BufferedImage SNAKE_BODY;
+    public static BufferedImage SNAKE_TAIL;
     static {
         try {
             FONT_FIRST = Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/digital-7.ttf")).deriveFont(36f);
@@ -32,6 +35,9 @@ public class Resources {
             ICON_CONTINUE_DIRECT = new ImageIcon("resources/image/continue_direct.png");
             ICON_RESTART = new ImageIcon("resources/image/restart.png");
             ICON_RESTART_DIRECT = new ImageIcon("resources/image/restart_direct.png");
+            SNAKE_HEAD = ImageIO.read(new File("resources/image/head.png"));
+            SNAKE_BODY = ImageIO.read(new File("resources/image/body.png"));
+            SNAKE_TAIL = ImageIO.read(new File("resources/image/tail.png"));
         } catch (FontFormatException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
