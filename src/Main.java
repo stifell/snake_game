@@ -55,7 +55,6 @@ public class Main extends JFrame {
         pause = new Pause_panel(game,this); // панелька паузы
         game.setVisible(false); // убираем видимость
         label.setVisible(false);
-        game.flow.stop();
         this.add(pause); // добавляем в окно
         revalidate();
         repaint();
@@ -63,7 +62,6 @@ public class Main extends JFrame {
     public void pause_exit(){
         this.remove(pause); // убираем паузу
         game.setVisible(true); // добавляем видимость
-        game.flow();
         label.setVisible(true);
         update_score(game.score); // прошлый счет при рестарте сохраняется, обновляем
         game.requestFocus(); // фокусируем игру
