@@ -15,8 +15,6 @@ public class Game extends JPanel implements ActionListener {
     final int SNAKE_SIZE = 25;
     final int APPLE_SIZE = 25;
     public int score;
-    //private int angle = 0;
-    private int an = 0;
     private boolean game;
     private Point apple;
     private Point apple_flow = new Point(0,0);
