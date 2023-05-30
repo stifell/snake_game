@@ -1,5 +1,10 @@
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Flow implements Runnable{
     Game game;
+    private volatile  boolean running = true;
     Flow(Game game){
         this.game = game;
 
@@ -7,7 +12,7 @@ public class Flow implements Runnable{
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             game.newApple();//обращение к методу newApple из класса Game
             try {
                 Thread.sleep(3000);//спаун яблок раз в 3 сек
@@ -16,5 +21,9 @@ public class Flow implements Runnable{
                 e.printStackTrace();
             }
         }
+
+    }
+    public void stop(){
+        running = false;
     }
 }

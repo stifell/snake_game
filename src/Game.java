@@ -20,6 +20,7 @@ public class Game extends JPanel implements ActionListener {
     private Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
     public Timer timer;
     public Thread thread;
+    public Flow flow;
     Game(Main main){
         this.main = main;
         setBounds(68,57,Main.WIDTH-136,Main.HEIGTH-114);
@@ -37,14 +38,17 @@ public class Game extends JPanel implements ActionListener {
         snake.add(new Point(1,0));
         snake.add(new Point(0,0));
 //        newApple();
-        thread = new Thread(new Flow(this));
-        thread.start();
+        flow();
         timer = new Timer(90, this);
         timer.start();
     }
-
+    void flow(){
+        flow = new Flow(this);
+        thread = new Thread(flow);
+        thread.start();
+    }
     void newApple(){
-        while (true){ // 3 яблока
+        while (true){
             Point apple = new Point(rng.nextInt(getWidth()/APPLE_SIZE),rng.nextInt(getHeight()/APPLE_SIZE));
             if (!apples.contains(apple) && !snake.contains(apple)){ // если яблока с такими координатами нет и не на змее
                 apples.add(apple);
