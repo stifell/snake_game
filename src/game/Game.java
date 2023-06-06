@@ -1,5 +1,7 @@
+package game;
+
+import extra.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,16 +10,16 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class Game extends JPanel implements ActionListener {
     private Main main;
     final int SNAKE_SIZE = 25;
     final int APPLE_SIZE = 25;
-    public int score;
+    public int score = 0;
     private boolean game;
-    private Point apple;
-    private Point apple_flow = new Point(0,0);
+    private BufferedImage game_panel;
+    private Point apple = new Point();
+    public Point apple_flow = new Point();
     private List<Point> snake = new ArrayList<Point>();
     private List<Point> change_point = new ArrayList<Point>();
     private List<Direction> directionList = new ArrayList<Direction>();
@@ -36,17 +38,17 @@ public class Game extends JPanel implements ActionListener {
         start();
     }
 
-    void start(){
+    private void start(){
         game = true;
-        score = 0;
+        Game_panel();
         // длинна змеи
         snake.add(new Point(2,0));
         snake.add(new Point(1,0));
         snake.add(new Point(0,0));
-        newApple();
-        change_point.add(snake.get(0));
+        apple = newApple();
         for (int i = 0; i < snake.size(); i++)
             directionList.add(direction);
+        change_point.add(snake.get(0));
         change_direction.add(directionList.get(0));
         thread = new Thread(new Flow(this));
         thread.start();
@@ -54,25 +56,17 @@ public class Game extends JPanel implements ActionListener {
         timer.start();
     }
 
-    void newApple(){
+    public Point newApple(){
+        Point newapple;
         while (true){
-            apple = new Point(rng.nextInt(getWidth()/APPLE_SIZE),rng.nextInt(getHeight()/APPLE_SIZE));
-            if (!snake.contains(apple)){ // если яблока с такими координатами не на змее
-                break;
+            newapple = new Point(rng.nextInt(getWidth()/APPLE_SIZE),rng.nextInt(getHeight()/APPLE_SIZE));
+            if (!snake.contains(newapple) && !apple.equals(newapple)){ // если яблока с такими координатами не на змее
+                return newapple;
             }
         }
     }
 
-    void newApple_Flow(){
-        while (true){
-            apple_flow = new Point(rng.nextInt(getWidth()/APPLE_SIZE),rng.nextInt(1,getHeight()/APPLE_SIZE));
-            if (!snake.contains(apple_flow) && !apple.equals(apple_flow)){
-                break;
-            }
-        }
-    }
-
-    void snake_move() {
+    private void snake_move() {
         Point head = snake.get(0);
         int dx = head.x, dy = head.y;
         switch (direction){
@@ -96,7 +90,7 @@ public class Game extends JPanel implements ActionListener {
         }
         // если яблоко увлечиваем счетчик
         if (apple.equals(newHead)){ // сравнение
-            newApple();
+            apple = newApple();
             directionList.add(0,direction);
             score++;
             main.update_score(score); // вывод счетчика
@@ -115,7 +109,7 @@ public class Game extends JPanel implements ActionListener {
         }
     }
 
-    void setDirection(Direction direction) {
+    public void setDirection(Direction direction) {
         // запрещает изменение направления, если игра закончена
         if (!game) {
             return;
@@ -132,7 +126,7 @@ public class Game extends JPanel implements ActionListener {
         this.direction = direction;
     }
 
-    int pictureDirection(Direction direction){
+    private int pictureDirection(Direction direction){
         int angle = 0;
         switch (direction){
             case RIGHT: angle = 0; break;
@@ -141,31 +135,37 @@ public class Game extends JPanel implements ActionListener {
             case UP: angle = 270; break;
         }
         return angle;
-        }
+    }
 
-    @Override
-    protected void paintComponent(Graphics g){ // рисования графики внутри компонента
-        super.paintComponent(g); // настройка графического контекста
-        Graphics2D g2 = (Graphics2D) g;
-        AffineTransform at = g2.getTransform();
-
+    private void Game_panel(){
+        game_panel = new BufferedImage(getWidth(),getHeight(),BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = game_panel.createGraphics();
         for (int i = 0; i < getHeight()/SNAKE_SIZE; i++){
             for (int j = 0; j < getWidth()/SNAKE_SIZE; j++){
                 if (i % 2 == 0) {
                     if (j % 2 == 0)
-                        g.setColor(new Color(170, 215, 81));
+                        g2.setColor(new Color(170, 215, 81));
                     else
-                        g.setColor(new Color(162, 209, 73));
+                        g2.setColor(new Color(162, 209, 73));
                 }
                 else {
                     if (j % 2 == 0)
-                        g.setColor(new Color(162, 209, 73));
+                        g2.setColor(new Color(162, 209, 73));
                     else
-                        g.setColor(new Color(170, 215, 81));
+                        g2.setColor(new Color(170, 215, 81));
                 }
-                g.fillRect(j*SNAKE_SIZE,i*SNAKE_SIZE,SNAKE_SIZE,SNAKE_SIZE);
+                g2.fillRect(j*SNAKE_SIZE,i*SNAKE_SIZE,SNAKE_SIZE,SNAKE_SIZE);
             }
         }
+        g2.dispose();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g){ // рисования графики внутри компонента
+        super.paintComponent(g); // настройка графического контекста
+        g.drawImage(game_panel,0,0,null);
+        Graphics2D g2 = (Graphics2D) g;
+        AffineTransform at = g2.getTransform();
         if (!game){
             main.game_over_start();
             return;

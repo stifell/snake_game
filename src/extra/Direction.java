@@ -1,3 +1,5 @@
+package extra;
+
 public enum Direction {
     UP,
     RIGHT,

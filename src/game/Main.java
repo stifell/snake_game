@@ -1,11 +1,13 @@
+package game;
+
+import panels.*;
+import extra.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Main extends JFrame {
-    static final int WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-    static final int HEIGTH = Toolkit.getDefaultToolkit().getScreenSize().height;
+    public static final int WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+    public static final int HEIGTH = Toolkit.getDefaultToolkit().getScreenSize().height;
     private JLabel label; // счетчик
     private Home_panel home; // панелька
     private Game game;
@@ -21,27 +23,21 @@ public class Main extends JFrame {
         setUndecorated(true); // полноэкранный режим
         getContentPane().setBackground(new Color(32,142,81));
 
-        home = new Home_panel(); // начальная панелька
+        home = new Home_panel(this); // начальная панелька
         add(home);
-
-        home.getPlayButton().addActionListener(new ActionListener() { // считывание нажатия на кнопку play
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startGame();
-            }
-        });
 
         label = new JLabel(); // счетик
         label.setForeground(Color.WHITE);
         label.setFont(Resources.FONT_FIRST);
-        label.setBounds(68,15,150,50);
-        label.setText("Score: " + 0);
+        label.setBounds(68,15,200,50);
+        label.setText("Score: 0000");
         add(label);
 
         setVisible(true); // видимость окна
     }
     public void update_score(int score){
-        label.setText("Score: " + score);
+        String message_score = String.format("Score: %04d",score);
+        label.setText(message_score);
     } // меняем при каждом добавлении score
     public void startGame(){
         game = new Game(this);
@@ -52,7 +48,7 @@ public class Main extends JFrame {
         repaint(); // обновления отрисовки компонентов
     }
     public void pause_start(){
-        pause = new Pause_panel(game,this); // панелька паузы
+        pause = new Pause_panel(this,game); // панелька паузы
         game.setVisible(false); // убираем видимость
         label.setVisible(false);
         this.add(pause); // добавляем в окно
@@ -69,7 +65,7 @@ public class Main extends JFrame {
         repaint();
     }
     public void game_over_start(){
-        game_over = new Game_over_panel(game,this); // панелька game over
+        game_over = new Game_over_panel(this,game); // панелька game over
         game.setVisible(false); // убираем видимость
         label.setVisible(false);
         this.add(game_over); // добавляем в окно
