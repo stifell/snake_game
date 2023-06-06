@@ -200,7 +200,7 @@ public class Game extends JPanel implements ActionListener {
         }
         g.drawImage(Resources.APPLE_IMAGE,apple.x*APPLE_SIZE,apple.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE,null);
         if (!apple_flow.equals(new Point(0,0)))
-            g.drawImage(Resources.APPLE_IMAGE,apple_flow.x*APPLE_SIZE,apple_flow.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE,null);
+            g.drawImage(Resources.APPLE_YELLOW_IMAGE,apple_flow.x*APPLE_SIZE,apple_flow.y*APPLE_SIZE,APPLE_SIZE,APPLE_SIZE,null);
     }
 
     @Override
