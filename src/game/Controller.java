@@ -23,16 +23,16 @@ public class Controller implements KeyListener {
         if (game.timer.isRunning()) { // чтобы при паузе нельзя было менять направление
             switch (key) {
                 case KeyEvent.VK_W: // константы для клавиш
-                    game.setDirection(Direction.UP);
+                    game.set_direction(Direction.UP);
                     break;
                 case KeyEvent.VK_S:
-                    game.setDirection(Direction.DOWN);
+                    game.set_direction(Direction.DOWN);
                     break;
                 case KeyEvent.VK_A:
-                    game.setDirection(Direction.LEFT);
+                    game.set_direction(Direction.LEFT);
                     break;
                 case KeyEvent.VK_D:
-                    game.setDirection(Direction.RIGHT);
+                    game.set_direction(Direction.RIGHT);
                     break;
                 case KeyEvent.VK_ESCAPE:
                     game.timer.stop();

@@ -9,9 +9,7 @@ public class Listeners {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Логика обработки нажатия кнопки "play"
-                main.startGame();
-
-
+                main.start_game();
             }
         };
     }
@@ -23,7 +21,6 @@ public class Listeners {
                 // Логика обработки нажатия кнопки "continue"
                 main.pause_exit();
                 game.timer.start();
-
             }
         };
     }
@@ -43,10 +40,9 @@ public class Listeners {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Логика обработки нажатия кнопки "restart"
-                main.startGame();
+                main.game = null;
+                main.restart_game();
                 main.pause_exit();
-
-
             }
         };
     }
@@ -54,9 +50,8 @@ public class Listeners {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.startGame();
+                main.restart_game();
                 main.game_over_exit();
-
             }
         };
     }

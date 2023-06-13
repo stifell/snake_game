@@ -3,26 +3,32 @@ package ai;
 import java.util.Random;
 
 public class AI {
-    float[] k = new float[7];
-    AI(float[] k){
-        for (int i = 0; i < 7; i++)
+    float[] k = new float[6];
+    public AI(float[] k){
+        for (int i = 0; i < 6; i++)
             this.k[i] = k[i];
     }
     AI(float delta, AI parent){
         Random rng =new Random();
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 6; i++)
             k[i] = parent.k[i] - delta + rng.nextFloat(delta) * 2;
     }
-    int snake_go(float O_t, float O_r, float O_l, float x_h, float y_h,float x_a, float y_a) {
-        if (k[0]*O_t + k[1]*O_r + k[2]*O_l + k[3]*x_h + k[4]*y_h + k[5]*x_a + k[6]*y_a < -50)
-                return -1;
-        if (k[0]*O_t + k[1]*O_r + k[2]*O_l + k[3]*x_h + k[4]*y_h + k[5]*x_a + k[6]*y_a > 50)
-            return 1;
-        return 0;
+
+    public float snake_go_top(float O_t, float e_t) {
+        return k[0]*O_t + k[3]*e_t;
     }
+
+    public float snake_go_right(float O_r, float e_r) {
+        return k[1]*O_r + k[4]*e_r;
+    }
+
+    public float snake_go_left(float O_l, float e_l) {
+        return k[2]*O_l + k[5]*e_l;
+    }
+
     void output(){
-        for (int i = 0; i < 7; i++){
-            System.out.print(k[i] + "f,  ");
+        for (int i = 0; i < 6; i++){
+            System.out.print(k[i] + "f, ");
         }
         System.out.println();
     }

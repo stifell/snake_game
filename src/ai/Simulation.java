@@ -2,11 +2,8 @@ package ai;
 
 import extra.Direction;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Simulation{
@@ -16,9 +13,9 @@ public class Simulation{
     private boolean game;
 
     private Point apple = new Point();
-    private java.util.List<Point> snake = new ArrayList<Point>();
-    private Random rng = new Random();
-    private Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
+    private final java.util.List<Point> snake = new ArrayList<>();
+    private final Random rng = new Random();
+    private static Direction direction = Direction.RIGHT; // начальное направление движения змейки вправо
 
     public float run(AI ai){
         int steps = 0;
@@ -26,12 +23,13 @@ public class Simulation{
         do{
             snake_move(ai);
             steps++;
-        }while (game && steps < 5000);
-        return steps;
+        }while (game && score < 1000 && steps < 5000);
+        return score;
     }
 
     private void start(){
         game = true;
+        score = 0;
         // длинна змеи
         snake.add(new Point(2,0));
         snake.add(new Point(1,0));
@@ -43,96 +41,213 @@ public class Simulation{
         Point newapple;
         while (true){
             newapple = new Point(rng.nextInt(1400/APPLE_SIZE),rng.nextInt(750/APPLE_SIZE));
-            if (!snake.contains(newapple) && !apple.equals(newapple)){ // если яблока с такими координатами не на змее
+            if (!snake.contains(newapple)){ // если яблока с такими координатами не на змее
                 return newapple;
             }
         }
     }
 
-    float obstacle_top(Direction direction){
-        float size =0;
+    private float obstacle_top(Direction direction){
+        float size = 0;
         switch (direction){
-            case RIGHT: size = 56 - snake.get(0).x + 1;break;
-            case LEFT: size = 56 - (56 - snake.get(0).x) + 1;break;
-            case UP: size = 30 - (30 - snake.get(0).y) + 1;break;
-            case DOWN: size = 30 - snake.get(0).y + 1;break;
-
+            case RIGHT:
+                for (int i = snake.get(0).x + 1; i < 56; i++) {
+                    if (snake.contains(new Point(i, snake.get(0).y)))
+                        return size;
+                    size++;
+                }
+                break;
+            case LEFT:
+                for (int i = snake.get(0).x - 1; i >= 0; i--) {
+                    if (snake.contains(new Point(i, snake.get(0).y)))
+                        return size;
+                    size++;
+                }
+                break;
+            case UP:
+                for (int i = snake.get(0).y - 1; i >= 0; i--) {
+                    if (snake.contains(new Point(snake.get(0).x, i)))
+                        return size;
+                    size++;
+                }
+                break;
+            case DOWN:
+                for (int i = snake.get(0).y + 1; i < 30; i++) {
+                    if (snake.contains(new Point(snake.get(0).x, i)))
+                        return size;
+                    size++;
+                }
+                break;
         }
         return size;
     }
-    float obstacle_left(Direction direction){
-        float size =0;
+    private float obstacle_left(Direction direction){
+        float size = 0;
         switch (direction){
-            case DOWN: size = 56 - snake.get(0).x + 1;break;
-            case UP: size = 56 - (56 - snake.get(0).x) + 1;break;
-            case RIGHT: size = 30 - (30 - snake.get(0).y) + 1;break;
-            case LEFT: size = 30 - snake.get(0).y + 1;break;
-
+            case DOWN:
+                for (int i = snake.get(0).x + 1; i < 56; i++) {
+                    if (snake.contains(new Point(i, snake.get(0).y)))
+                        return size;
+                    size++;
+                }
+                break;
+            case UP:
+                for (int i = snake.get(0).x - 1; i >= 0; i--) {
+                    if (snake.contains(new Point(i, snake.get(0).y)))
+                        return size;
+                    size++;
+                }
+                break;
+            case RIGHT:
+                for (int i = snake.get(0).y - 1; i >= 0; i--) {
+                    if (snake.contains(new Point(snake.get(0).x, i)))
+                        return size;
+                    size++;
+                }
+                break;
+            case LEFT:
+                for (int i = snake.get(0).y + 1; i < 30; i++) {
+                    if (snake.contains(new Point(snake.get(0).x, i)))
+                        return size;
+                    size++;
+                }
+                break;
         }
         return size;
     }
-    float obstacle_right(Direction direction){
-        float size =0;
+    private float obstacle_right(Direction direction){
+        float size = 0;
         switch (direction){
-            case UP: size = 56 - snake.get(0).x + 1;break;
-            case DOWN: size = 56 - (56 - snake.get(0).x) + 1;break;
-            case LEFT: size = 30 - (30 - snake.get(0).y) + 1;break;
-            case RIGHT: size = 30 - snake.get(0).y + 1;break;
-
+            case UP:
+                for (int i = snake.get(0).x + 1; i < 56; i++) {
+                    if (snake.contains(new Point(i, snake.get(0).y)))
+                        return size;
+                    size++;
+                }
+                break;
+            case DOWN:
+                for (int i = snake.get(0).x - 1; i >= 0; i--) {
+                    if (snake.contains(new Point(i, snake.get(0).y)))
+                        return size;
+                    size++;
+                }
+                break;
+            case LEFT:
+                for (int i = snake.get(0).y - 1; i >= 0; i--) {
+                    if (snake.contains(new Point(snake.get(0).x, i)))
+                        return size;
+                    size++;
+                }
+                break;
+            case RIGHT:
+                for (int i = snake.get(0).y + 1; i < 30; i++) {
+                    if (snake.contains(new Point(snake.get(0).x, i)))
+                        return size;
+                    size++;
+                }
+                break;
         }
         return size;
+    }
+
+    private Direction vary(Direction direction, Direction dir){
+        switch (direction) {
+            case UP:
+                switch (dir) {
+                    case LEFT:
+                        return Direction.LEFT;
+                    case RIGHT:
+                        return Direction.RIGHT;
+                }
+                break;
+            case DOWN:
+                switch (dir){
+                    case LEFT:
+                        return Direction.RIGHT;
+                    case RIGHT:
+                        return Direction.LEFT;
+                }
+                break ;
+            case LEFT:
+                switch (dir){
+                    case LEFT:
+                        return Direction.DOWN;
+                    case RIGHT:
+                        return Direction.UP;
+                }
+                break ;
+            case RIGHT:
+                switch (dir){
+                    case LEFT:
+                        return Direction.UP;
+                    case RIGHT:
+                        return Direction.DOWN;
+                }
+                break ;
+        }
+        return direction;
+    }
+
+    private float EuclideanDistance(float x_h, float y_h, float x_a, float y_a){
+        return (float) Math.sqrt(Math.pow(x_h - x_a,2) + Math.pow(y_h - y_a,2));
+    }
+
+    private float Euclidean_top(Direction direction, float x_h, float y_h, float x_a, float y_a){
+        switch (direction){
+            case RIGHT: return EuclideanDistance(x_h+1,y_h,x_a,y_a);
+            case LEFT: return EuclideanDistance(x_h-1,y_h,x_a,y_a);
+            case UP: return EuclideanDistance(x_h,y_h-1,x_a,y_a);
+            case DOWN: return EuclideanDistance(x_h,y_h+1,x_a,y_a);
+        }
+        return -1;
+    }
+
+    private float Euclidean_right(Direction direction, float x_h, float y_h, float x_a, float y_a){
+        switch (direction){
+            case RIGHT: return EuclideanDistance(x_h,y_h+1,x_a,y_a);
+            case LEFT: return EuclideanDistance(x_h,y_h-1,x_a,y_a);
+            case UP: return EuclideanDistance(x_h+1,y_h,x_a,y_a);
+            case DOWN: return EuclideanDistance(x_h-1,y_h,x_a,y_a);
+        }
+        return -1;
+    }
+
+    private float Euclidean_left(Direction direction, float x_h, float y_h, float x_a, float y_a){
+        switch (direction){
+            case RIGHT: return EuclideanDistance(x_h,y_h-1,x_a,y_a);
+            case LEFT: return EuclideanDistance(x_h,y_h+1,x_a,y_a);
+            case UP: return EuclideanDistance(x_h-1,y_h,x_a,y_a);
+            case DOWN: return EuclideanDistance(x_h+1,y_h,x_a,y_a);
+        }
+        return -1;
     }
 
     private void snake_move(AI ai) {
         Point head = snake.get(0);
         int dx = head.x, dy = head.y;
-        float x = snake.get(0).x;
-        float y = snake.get(0).y;
+        float x_h = snake.get(0).x;
+        float y_h = snake.get(0).y;
         float x_a = apple.x;
         float y_a = apple.y;
-        float o_t = obstacle_top(direction);
-        float o_r = obstacle_right(direction);
-        float o_l = obstacle_left(direction);
-        int dir = ai.snake_go(o_t,o_r,o_l,x,y,x_a,y_a);
-        switch (direction) {
-            case UP:
-                switch (dir) {
-                    case -1:
-                        direction = Direction.LEFT;
-                        break;
-                    case 1:
-                        direction = Direction.RIGHT;
-                        break ;
-                }
-                break;
-            case DOWN:
-                switch (dir){
-                    case -1:
-                        direction = Direction.RIGHT;
-                        break;
-                    case 1:
-                        direction = Direction.LEFT;
-                        break ;
-                }
-            case LEFT:
-                switch (dir){
-                    case -1:
-                        direction = Direction.DOWN;
-                        break;
-                    case 1:
-                        direction = Direction.UP;
-                        break ;
-                }
-            case RIGHT:
-                switch (dir){
-                    case -1:
-                        direction = Direction.UP;
-                        break;
-                    case 1:
-                        direction = Direction.DOWN;
-                        break ;
-                }
+        float e_t = Euclidean_top(direction,x_h,y_h,x_a,y_a);
+        float e_r = Euclidean_right(direction,x_h,y_h,x_a,y_a);
+        float e_l = Euclidean_left(direction,x_h,y_h,x_a,y_a);
+        float o_t = 1/obstacle_top(direction);
+        float o_r = 1/obstacle_right(direction);
+        float o_l = 1/obstacle_left(direction);
+        float top = ai.snake_go_top(o_t,e_t);
+        float right = ai.snake_go_right(o_r,e_r);
+        float left = ai.snake_go_left(o_l,e_l);
+        float minWeight = Math.min(Math.min(top, right), left);
+        Direction dir;
+        if (minWeight == top) {
+            dir = direction;
+        } else if (minWeight == right) {
+            dir = Direction.RIGHT;
+        } else {
+            dir = Direction.LEFT;
         }
+        direction = vary(direction, dir);
         switch (direction){
             case UP: dy -= 1; break;
             case DOWN: dy += 1; break;
